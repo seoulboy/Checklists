@@ -7,23 +7,37 @@
 
 import UIKit
 
-class ChecklistViewController: UITableViewController {
-
+class ChecklistViewController: UITableViewController, AddItemViewControllerDelegate {
     
-    var items = [ChecklistItem]()
+    // MARK - AddItemViewController Delegates
+    func addItemViewControllerDidCancel(_ controller: AddItemViewController) {
+        navigationController?.popViewController(animated: true)
+    }
     
-    // MARK: - Actions
-    @IBAction func addItem() {
+    func addItemViewController(_ controller: AddItemViewController, didFinishAdding item: ChecklistItem) {
         let newRowIndex = items.count
-        // whenever you add a row to the end of an array, the index of the new row is always equal to the number of items currently in the array
-        
-        let item = ChecklistItem()
-        item.text = "I am a new row"
         items.append(item)
         
         let indexPath = IndexPath(row: newRowIndex, section: 0)
         let indexPaths = [indexPath]
         tableView.insertRows(at: indexPaths, with: .automatic)
+        
+        navigationController?.popViewController(animated: true)
+    }
+    
+    var items = [ChecklistItem]()
+    
+    // MARK: - Navigation
+    override func prepare(
+        for segue: UIStoryboardSegue,
+        sender: Any?
+    ) {
+        if segue.identifier == "AddItem" {
+            
+            let controller = segue.destination as! AddItemViewController
+            
+            controller.delegate = self
+        }
     }
 
     override func viewDidLoad() {
