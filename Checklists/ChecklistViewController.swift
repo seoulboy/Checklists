@@ -9,42 +9,7 @@ import UIKit
 
 class ChecklistViewController: UITableViewController, ItemDetailViewControllerDelegate {
     
-    // MARK - ItemDetailViewController Delegates
-    func itemDetailViewControllerDidCancel(
-        _ controller: ItemDetailViewController
-    ) {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func itemDetailViewController(
-        _ controller: ItemDetailViewController,
-        didFinishAdding item: ChecklistItem
-    ) {
-        let newRowIndex = items.count
-        items.append(item)
-        
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
-        tableView.insertRows(at: indexPaths, with: .automatic)
-        
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func itemDetailViewController(
-        _ controller: ItemDetailViewController,
-        didFinishEditing item: ChecklistItem
-    ) {
-        if let index = items.firstIndex(of: item) {
-            let indexPath = IndexPath(row: index, section: 0)
-            if let cell = tableView.cellForRow(at: indexPath) {
-                configureText(for: cell, with: item)
-            }
-        }
-        navigationController?.popViewController(animated: true)
-    }
-    
     var items = [ChecklistItem]()
-
     
     // MARK: - Navigation
     override func prepare(
@@ -64,41 +29,16 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
             }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        let item1 = ChecklistItem()
-        item1.text = "Walk the dog"
-        items.append(item1)
-        
-        let item2 = ChecklistItem()
-        item2.text = "Brush my teeth"
-        item2.check = true
-        items.append(item2)
-        
-        let item3 = ChecklistItem()
-        item3.text = "Learned iOS development"
-        item3.check = true
-        items.append(item3)
-        
-        let item4 = ChecklistItem()
-        item4.text = "Soccer Practice"
-        items.append(item4)
-        
-        let item5 = ChecklistItem()
-        item5.text = "Eat ice cream"
-        item5.check = true
-        items.append(item5)
-        
-        let item6 = ChecklistItem()
-        item6.text = "Eat sleep code"
-        item6.check = true
-        items.append(item6)
+        // Load Item
+        loadChecklistItems()
     }
-
+    
     override func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
@@ -115,25 +55,26 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
             for: indexPath)
         
         let item = items[indexPath.row]
-
+        
         configureText(for: cell, with: item)
         configureCheckmark(for: cell, with: item)
         
         return cell
     }
-
+    
     override func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
         if let cell = tableView.cellForRow(at: indexPath) {
-             
+            
             let item = items[indexPath.row]
             item.check.toggle()
             configureCheckmark(for: cell, with: item)
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+        saveChecklistItems()
     }
     
     override func tableView(
@@ -148,6 +89,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         // delete the corresponding row from the table view
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
+        saveChecklistItems()
     }
     
     func configureText(
@@ -165,5 +107,80 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         let label = cell.viewWithTag(1001) as! UILabel
         
         label.text = item.check ? "✓" : ""
+    }
+    
+    func documentsDirectory() -> URL {
+        let paths = FileManager.default.urls(
+            for: .documentDirectory,
+            in: .userDomainMask)
+        return paths[0]
+    }
+    
+    func dataFilePath() -> URL {
+        return documentsDirectory().appendingPathComponent("Checklists.plist")
+    }
+    
+    func saveChecklistItems() {
+        
+        let encoder = PropertyListEncoder()
+        
+        do {
+            
+            let data = try encoder.encode(items)
+            
+            try data.write(
+                to: dataFilePath(),
+                options: Data.WritingOptions.atomic
+            )
+        } catch {
+            print("Error encoding item array: \(error.localizedDescription)")
+        }
+    }
+    
+    func loadChecklistItems() {
+        let decoder = PropertyListDecoder()
+        
+        do {
+            let data = try Data(contentsOf: dataFilePath())
+            items = try decoder.decode([ChecklistItem].self, from: data)
+        } catch {
+            print("Error decodign item array: \(error.localizedDescription)")
+        }
+    }
+    
+    // MARK: - ItemDetailViewController Delegates
+    func itemDetailViewControllerDidCancel(
+        _ controller: ItemDetailViewController
+    ) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func itemDetailViewController(
+        _ controller: ItemDetailViewController,
+        didFinishAdding item: ChecklistItem
+    ) {
+        let newRowIndex = items.count
+        items.append(item)
+        
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        tableView.insertRows(at: indexPaths, with: .automatic)
+        
+        navigationController?.popViewController(animated: true)
+        saveChecklistItems()
+    }
+    
+    func itemDetailViewController(
+        _ controller: ItemDetailViewController,
+        didFinishEditing item: ChecklistItem
+    ) {
+        if let index = items.firstIndex(of: item) {
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                configureText(for: cell, with: item)
+            }
+        }
+        navigationController?.popViewController(animated: true)
+        saveChecklistItems()
     }
 }
