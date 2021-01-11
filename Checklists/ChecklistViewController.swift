@@ -9,6 +9,7 @@ import UIKit
 
 class ChecklistViewController: UITableViewController, ItemDetailViewControllerDelegate {
     
+    var checklist: Checklist!
     var items = [ChecklistItem]()
     
     // MARK: - Navigation
@@ -33,10 +34,12 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .never
         
         // Load Item
         loadChecklistItems()
+        
+        title = checklist.name
     }
     
     override func tableView(
