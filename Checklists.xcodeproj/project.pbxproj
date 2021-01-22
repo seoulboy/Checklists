@@ -17,6 +17,7 @@
 		E4A0F70125A6F61300CF7200 /* AllListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A0F70025A6F61300CF7200 /* AllListsViewController.swift */; };
 		E4A0F70425AC7FD600CF7200 /* Checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A0F70325AC7FD600CF7200 /* Checklist.swift */; };
 		E4A0F70925AC956800CF7200 /* ListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A0F70825AC956800CF7200 /* ListDetailViewController.swift */; };
+		E4AFE87925BB228700CD8B77 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AFE87825BB228700CD8B77 /* DataModel.swift */; };
 		E4F0C3A125A47FA90050ECA1 /* ChecklistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F0C3A025A47FA90050ECA1 /* ChecklistItem.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		E4A0F70025A6F61300CF7200 /* AllListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllListsViewController.swift; sourceTree = "<group>"; };
 		E4A0F70325AC7FD600CF7200 /* Checklist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checklist.swift; sourceTree = "<group>"; };
 		E4A0F70825AC956800CF7200 /* ListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailViewController.swift; sourceTree = "<group>"; };
+		E4AFE87825BB228700CD8B77 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		E4F0C3A025A47FA90050ECA1 /* ChecklistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,6 +80,7 @@
 				E43898AC25A43F1C00EE7BEE /* Assets.xcassets */,
 				E43898AE25A43F1C00EE7BEE /* LaunchScreen.storyboard */,
 				E43898B125A43F1C00EE7BEE /* Info.plist */,
+				E4AFE87825BB228700CD8B77 /* DataModel.swift */,
 			);
 			path = Checklists;
 			sourceTree = "<group>";
@@ -160,6 +163,7 @@
 				E43898A625A43F1C00EE7BEE /* SceneDelegate.swift in Sources */,
 				E4F0C3A125A47FA90050ECA1 /* ChecklistItem.swift in Sources */,
 				E4A0F70425AC7FD600CF7200 /* Checklist.swift in Sources */,
+				E4AFE87925BB228700CD8B77 /* DataModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
