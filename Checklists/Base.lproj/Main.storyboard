@@ -39,7 +39,7 @@
         <!--Add Checklist-->
         <scene sceneID="6Vu-De-lI9">
             <objects>
-                <tableViewController id="2b5-7g-fbt" customClass="ListDetailViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ListDetailViewController" id="2b5-7g-fbt" customClass="ListDetailViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="Xum-qX-zHK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -59,6 +59,7 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
+                                                        <action selector="done" destination="2b5-7g-fbt" eventType="editingDidEndOnExit" id="D6z-4U-9hG"/>
                                                         <outlet property="delegate" destination="2b5-7g-fbt" id="vxD-mc-9FX"/>
                                                     </connections>
                                                 </textField>
