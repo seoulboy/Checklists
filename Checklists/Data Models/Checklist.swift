@@ -17,6 +17,12 @@ class Checklist: NSObject, Codable {
         super.init()
     }
     
+    func sortItems() {
+        items.sort { item1, item2 in
+            return item1.dueDate < item2.dueDate
+        }
+    }
+    
     func countUncheckedItems() -> Int {
         return items.filter{ !$0.check }.count
     }

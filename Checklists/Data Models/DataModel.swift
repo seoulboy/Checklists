@@ -23,7 +23,7 @@ class DataModel {
         registerDefaults()
         handleFirstTime()
     }
-    
+
     // MARK: - Sort Checklist
     func sortChecklists() {
         lists.sort { list1, list2 in
@@ -84,5 +84,12 @@ class DataModel {
             indexOfSelectedChecklist = 0
             userDefaults.set(false, forKey: "FirstTime")
         }
+    }
+    
+    class func nextChecklistItemID() -> Int {
+        let userDefaults = UserDefaults.standard
+        let itemID = userDefaults.integer(forKey: "ChecklistItemID")
+        userDefaults.set(itemID + 1, forKey: "ChecklistItemID")
+        return itemID
     }
 }

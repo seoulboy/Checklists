@@ -5,11 +5,13 @@
 //  Created by Eric Jang on 2021/01/05.
 //
 
+import Foundation
 import UIKit
 
 class ChecklistViewController: UITableViewController, ItemDetailViewControllerDelegate {
     
     var checklist: Checklist!
+    let dateFormatter = DateFormatter()
     
     // MARK: - Navigation
     override func prepare(
@@ -57,6 +59,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         
         configureText(for: cell, with: item)
         configureCheckmark(for: cell, with: item)
+        configureDate(for: cell, with: item)
         
         return cell
     }
@@ -93,7 +96,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         for cell: UITableViewCell,
         with item: ChecklistItem
     ) {
-        let label = cell.viewWithTag(1000) as! UILabel
+        let label = cell.viewWithTag(1001) as! UILabel
         label.text = item.text
     }
     
@@ -101,49 +104,17 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         for cell: UITableViewCell,
         with item: ChecklistItem
     ) {
-        let label = cell.viewWithTag(1001) as! UILabel
+        let label = cell.viewWithTag(1002) as! UILabel
         
         label.text = item.check ? "✓" : ""
     }
     
-//    func documentsDirectory() -> URL {
-//        let paths = FileManager.default.urls(
-//            for: .documentDirectory,
-//            in: .userDomainMask)
-//        return paths[0]
-//    }
-    
-//    func dataFilePath() -> URL {
-//        return documentsDirectory().appendingPathComponent("Checklists.plist")
-//    }
-    
-//    func saveChecklistItems() {
-//
-//        let encoder = PropertyListEncoder()
-//
-//        do {
-//
-//            let data = try encoder.encode(checklist.items)
-//
-//            try data.write(
-//                to: dataFilePath(),
-//                options: Data.WritingOptions.atomic
-//            )
-//        } catch {
-//            print("Error encoding item array: \(error.localizedDescription)")
-//        }
-//    }
-    
-//    func loadChecklistItems() {
-//        let decoder = PropertyListDecoder()
-//
-//        do {
-//            let data = try Data(contentsOf: dataFilePath())
-//            checklist.items = try decoder.decode([ChecklistItem].self, from: data)
-//        } catch {
-//            print("Error decodign item array: \(error.localizedDescription)")
-//        }
-//    }
+    func configureDate(for cell: UITableViewCell, with item: ChecklistItem) {
+        let label = cell.viewWithTag(1003) as! UILabel
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .short
+        label.text = dateFormatter.string(from: item.dueDate)
+    }
     
     // MARK: - ItemDetailViewController Delegates
     func itemDetailViewControllerDidCancel(
@@ -156,13 +127,9 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         _ controller: ItemDetailViewController,
         didFinishAdding item: ChecklistItem
     ) {
-        let newRowIndex = checklist.items.count
         checklist.items.append(item)
-        
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
-        tableView.insertRows(at: indexPaths, with: .automatic)
-        
+        checklist.sortItems()
+        tableView.reloadData()
         navigationController?.popViewController(animated: true)
     }
     
@@ -170,12 +137,8 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         _ controller: ItemDetailViewController,
         didFinishEditing item: ChecklistItem
     ) {
-        if let index = checklist.items.firstIndex(of: item) {
-            let indexPath = IndexPath(row: index, section: 0)
-            if let cell = tableView.cellForRow(at: indexPath) {
-                configureText(for: cell, with: item)
-            }
-        }
+        checklist.sortItems()
+        tableView.reloadData()
         navigationController?.popViewController(animated: true)
     }
 }
