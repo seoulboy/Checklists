@@ -18,7 +18,7 @@ class ChecklistItem: NSObject, Codable {
         super.init()
         itemID = DataModel.nextChecklistItemID()
     }
-
+    
     func scheduleNotification() {
         removeNotification()
         if shouldRemind && dueDate > Date() {

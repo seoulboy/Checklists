@@ -23,7 +23,7 @@ class DataModel {
         registerDefaults()
         handleFirstTime()
     }
-
+    
     // MARK: - Sort Checklist
     func sortChecklists() {
         lists.sort { list1, list2 in
